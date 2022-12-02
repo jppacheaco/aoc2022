@@ -26,3 +26,14 @@
 # In this example, if you were to follow the strategy guide, you would get a total score of 15 (8 + 1 + 6).
 
 # What would your total score be if everything goes exactly according to your strategy guide?
+
+#MY GAMEPLAN
+
+#get all pairs in from txt file
+
+
+#split each pair on newline and add as tuples to arrays
+
+#iterate through each pair
+#if you win add 6pts to sum, 3 to draw, 0 to loose
+#add pts to sum just based off what you played (1 for Rock, 2 for Paper, and 3 for Scissors)
