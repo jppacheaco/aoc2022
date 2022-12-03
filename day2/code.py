@@ -48,7 +48,7 @@ for line in file:
     item = line.replace('\n', '')
     pairs.append(item.split())
 
-print(pairs[0])
+# print(pairs[0])
 # print(len(pairs[0]))
 
 sum = 0
@@ -104,7 +104,7 @@ for item in pairs:
             #add 0 for the tie
             sum += 3
 
-print(sum)
+# print(sum)
 
 # --- Part Two ---
 # The Elf finishes helping with the tent and sneaks back over to you. "Anyway, the second column says how the round needs to end: X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win. Good luck!"
@@ -118,6 +118,45 @@ print(sum)
 
 # Following the Elf's instructions for the second column, what would your total score be if everything goes exactly according to your strategy guide?
 
+sum = 0
+#opponents shape Rock(A), Paper(B), Scissors(C)
+#our score Rock(+1), Paper(+2), Scissors(+3)
+for item in pairs:
+    outcome = item [1]
+    shape = item[0]
+    #if we are supposed to loose
+    if outcome == 'X':
+        sum += 0
+        #if we need to play Rock (opponent played paper)
+        if shape == 'B':
+            sum += 1
+        #if we need to play Paper (opponent played scissors)
+        elif shape == 'C':
+            sum += 2
+        #if we need to play Scissors (opponent played rock)
+        else:
+            sum += 3
 
+    #if we are suppose to win
+    elif outcome == 'Z':
+        sum += 6
+        #if we need to play Rock (opponent played scissors)
+        if shape == 'C':
+            sum += 1
+        #if we need to play Paper (opponent played rock)
+        elif shape == 'A':
+            sum += 2
+        #if we need to play Scissors (opponent played paper)
+        else:
+            sum += 3
+    #if we are supposed to draw
+    else:
+        sum += 3
+        if shape == 'A':
+            sum += 1
+        elif shape == 'B':
+            sum += 2
+        else:
+            sum += 3
 
-
+print(sum)
