@@ -37,3 +37,77 @@
 #iterate through each pair
 #if you win add 6pts to sum, 3 to draw, 0 to loose
 #add pts to sum just based off what you played (1 for Rock, 2 for Paper, and 3 for Scissors)
+
+#import 'input.txt' containing all the info of the 'gameplan'
+
+file = open('input.txt', 'r')
+
+pairs = []
+
+for line in file:
+    item = line.replace('\n', '')
+    pairs.append(item.split())
+
+print(pairs[0])
+# print(len(pairs[0]))
+
+sum = 0
+
+for item in pairs:
+    theirs = item[0]
+    mine = item[1]
+    #if i have Rock(X)
+    if mine == 'X':
+        sum += 1
+        #if they have Rock(A)
+        if theirs == 'A':
+            #add three for tie scenario
+            sum += 3
+        #if they have Paper(B)
+        elif theirs == 'B':
+            #add 0 for loss
+            sum += 0
+        #if they have Scissors(C)
+        else:
+            #add six for the win
+            sum += 6
+
+    #if i have Paper(Y)
+    elif mine  == 'Y':
+        sum += 2
+        #if they have Rock(A)
+        if theirs == 'A':
+            #add six for the win
+            sum += 6
+        #if they have Paper(B)
+        elif theirs == 'B':
+            #add three for the tie
+            sum += 3
+        #if they have Scissors(C)
+        else:
+            #add 0 for the loss
+            sum += 0
+    
+    #if i have Scissors(Z)
+    else:
+        sum += 3
+        #if they have Rock(A)
+        if theirs == 'A':
+            #add 0 for the loss
+            sum += 0
+        #if they have Paper(B)
+        elif theirs == 'B':
+            #add six for the win
+            sum += 6
+        #if they have Scissors(C)
+        else:
+            #add 0 for the tie
+            sum += 3
+
+print(sum)
+
+
+
+
+
+
