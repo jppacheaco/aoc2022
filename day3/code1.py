@@ -33,7 +33,7 @@
 
 # Find the item type that appears in both compartments of each rucksack. What is the sum of the priorities of those item types?
 
-file = open('sampleinput.txt', 'r')
+file = open('input.txt', 'r')
 
 #first half of item is items in first compartement
 #second half, second compartment
@@ -54,12 +54,12 @@ for line in file:
 # print(rucksack)
 
 #split each item in half and find common chars
-firsthalf = []
-secondhalf = []
 
 commonitems = []
 
 for item in rucksack:
+    firsthalf = []
+    secondhalf = []
     halfmark = len(item)/2
     for index, character in enumerate(item):
         if index < halfmark:
@@ -67,12 +67,97 @@ for item in rucksack:
         else:
             secondhalf.append(character)
 
-    print(firsthalf)
-    print(secondhalf)
 
-#currently i can properly seperate first and last halves
-#next i need to find the common char
-#then add that char to a list of all common chars
+    #next i need to find the common char
+    #then add that char to a list of all common chars
+    
+    found = False
+    for item in firsthalf:
+        checker = 0
+        for other in secondhalf:
+            if item == other:
+                commonitems.append(item)
+                checker += 1
+                found = True
+                break
+        if found == True:
+            break
+
+# print("Common")
+# print(commonitems)
+
+    
 #then sum all those common chars values
+sum = 0
+for item in commonitems:
+    value = ord(item) & 31
+    # print(value)
+    if item.islower():
+        sum += value
+    else:
+        value = value + 26
+        sum += value
+
+# print(sum)
+# --- Part Two ---
+# As you finish identifying the misplaced items, the Elves come to you with another issue.
+
+# For safety, the Elves are divided into groups of three. Every Elf carries a badge that identifies their group. For efficiency, within each group of three Elves, the badge is the only item type carried by all three Elves. That is, if a group's badge is item type B, then all three Elves will have item type B somewhere in their rucksack, and at most two of the Elves will be carrying any other item type.
+
+# The problem is that someone forgot to put this year's updated authenticity sticker on the badges. All of the badges need to be pulled out of the rucksacks so the new authenticity stickers can be attached.
+
+# Additionally, nobody wrote down which item type corresponds to each group's badges. The only way to tell which item type is the right one is by finding the one item type that is common between all three Elves in each group.
+
+# Every set of three lines in your list corresponds to a single group, but each group can have a different badge item type. So, in the above example, the first group's rucksacks are the first three lines:
+
+# vJrwpWtwJgWrhcsFMMfFFhFp
+# jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+# PmmdzqPrVvPwwTWBwg
+# And the second group's rucksacks are the next three lines:
+
+# wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+# ttgJtRGJQctTZtZT
+# CrZsJsPPZsGzwwsLwLmpwMDw
+# In the first group, the only item type that appears in all three rucksacks is lowercase r; this must be their badges. In the second group, their badge item type must be Z.
+
+# Priorities for these items must still be found to organize the sticker attachment efforts: here, they are 18 (r) for the first group and 52 (Z) for the second group. The sum of these is 70.
+
+# Find the item type that corresponds to the badges of each three-Elf group. What is the sum of the priorities of those item types?
 
 
+#find same items in all 3 items
+
+trio = []
+sets = []
+# print(rucksack)
+for index, item in enumerate(rucksack):
+    trio.append(item)
+    if (index % 3 == 2):
+        sets.append(trio)
+        trio = []
+
+
+##FIND COMMON CHAR IN THE TRIO
+first = False
+incommon = []
+for set in sets:
+    set1 = set[0]
+    set2 = set[1]
+    set3 = set[2]
+    for item in set1:
+        # print(item)
+        if (item in set2) and (item in set3):
+            incommon.append(item)
+            break
+
+sum = 0
+for item in incommon:
+    value = ord(item) & 31
+    # print(value)
+    if item.islower():
+        sum += value
+    else:
+        value = value + 26
+        sum += value
+print(sum)
+    
