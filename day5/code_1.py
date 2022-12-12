@@ -57,7 +57,7 @@
 
 
 #create stacks
-file = open('input.txt', 'r')
+file = open('sampleinput.txt', 'r')
 
 instructions = []
 stackinfo = []
@@ -70,73 +70,71 @@ for line in file:
     else:
         stackinfo.append(newline)
 
-stack1 = ["V", "J", "B", "D"]
-stack2 = ["F", "D", "R", "W", "B", "V", "P"]
-stack3 = ["Q", "W", "C", "D", "L", "F", "G", "R"]
-stack4 = ["B", "D", "N", "L", "M", "P", "J", "W"]
-stack5 = ["Q", "S", "C", "P", "B", "N", "H"]
-stack6 = ["G", "N", "S", "B", "D", "R"]
-stack7 = ["H", "S", "F", "Q", "M", "P", "B", "Z"]
-stack8 = ["F", "L", "W"]
-stack9 = ["R", "M", "F", "V", "S"]
-
-stacks = [stack1, stack1, stack3, stack4, stack5, stack6, stack7, stack8, stack9]
-
-#if we see a blank spot pop the next 4 and then check next char
-ind = 0
-finalline = stackinfo[len(stackinfo)-2]
-for index, item in enumerate(stackinfo):
-    if item[0] == '':
-        newitem = item[4:]
-        stackinfo[index] = newitem
-        
-for index, char in enumerate(finalline):
-    if char == '':
-        finalline.pop(index)
-for index, char in enumerate(finalline):
-    if char == '':
-        finalline.pop(index)
-        
-stackinfo[len(stackinfo)-2] = finalline
-
-
-for index, item in enumerate(stackinfo):
-    index = 0
-    while index < len(item):
-        if item[index] == '':
-            if index != (len(item) - 1):
-                if item[index+1] == '':
-                    # print(index)
-                    item.pop(index)
-                    item.pop(index)
-                    item.pop(index)
-                    index += 3
+for ind, item in enumerate(stackinfo):
+    numspaces = 0
+    topop = []
+    for index, char in enumerate(item):
+        if char == '':
+            numspaces += 1
+            if numspaces == 4:
+                numspaces = 0
             else:
-                item.pop(index)
-        index += 1
+                topop.append(index)
+    popped = 0
+    newitem = item
+    for num in topop:
+        newitem.pop(num-popped)
+        popped += 1
+    stackinfo[ind] = newitem
+
+
+finalline = stackinfo[len(stackinfo)-2]
+numstacks = []
+
+for item in finalline:
+    if item != '':
+        numstacks.append(item)
+stackinfo[len(stackinfo)-2] = numstacks
         
-for item in stackinfo:
-    print(item)
+#create each stack
+stacks = []
+for i in range(len(numstacks)):
+    stacks.append([])
 
-maxlength = 0
-for item in stackinfo:
-    if len(item) > maxlength:
-        maxlength = len(item)
-
-for index in range(len(stackinfo)-1):
-    while len(stackinfo[index]) < maxlength:
-        stackinfo[index].append('')
+stackinfo = stackinfo[:-2]
 
 for item in stackinfo:
-    print(item)
+    for i in range(len(item)):
+        stacks[i].append(item[i])
 
-#need to count how many times an iteration of 4 spaces happens so i can leave that many spaces
-#4 spaces is one space in the stack
+#FINALLY HAVE MADE STACKS
+# for item in stacks:
+#     print(item)
 
-# for item in stackinfo:
-#     for index, char in enumerate(item):
-#         if char != ' ':
+#NOW EXECUTE INSTRUCTIONS ON STACKS
+for item in instructions:
+    numtomove = int(item[1])
+    #subtract 1 to account for index
+    leaving = int(item[3]) - 1
+    entering = int(item[5]) - 1
+    moving = []
+    #get whats leaving and remove from current stack
+    for index, char in enumerate(stacks[leaving]):
+        if char != '' and numtomove != 0:
+            moving.append(char)
+            numtomove -=1 
+            stacks[leaving][index] = ''
+    ind = len(stacks[entering]) - 1
+    while len(moving) > 0:
+        if stacks[entering][ind] == '':
+            stacks[entering][ind] = moving[0]
+            moving.pop(0)
+        elif ind < 0:
+            stacks[entering].insert(0,moving[0])
+            moving.pop(0)
+        ind -= 1
+        
 
-#     print(len(item))
-
-# print(stackinfo)
+print(stacks)
+        
+    
