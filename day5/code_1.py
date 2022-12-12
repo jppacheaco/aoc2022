@@ -60,12 +60,15 @@
 file = open('input.txt', 'r')
 
 instructions = []
+stackinfo = []
 
 for line in file:
     line = line.replace('\n', '')
     newline = line.split(" ")
     if newline[0] == "move":
         instructions.append(newline)
+    else:
+        stackinfo.append(newline)
 
 stack1 = ["V", "J", "B", "D"]
 stack2 = ["F", "D", "R", "W", "B", "V", "P"]
@@ -80,15 +83,54 @@ stack9 = ["R", "M", "F", "V", "S"]
 stacks = [stack1, stack1, stack3, stack4, stack5, stack6, stack7, stack8, stack9]
 
 #if we see a blank spot pop the next 4 and then check next char
+ind = 0
+finalline = stackinfo[len(stackinfo)-2]
+for index, item in enumerate(stackinfo):
+    if item[0] == '':
+        newitem = item[4:]
+        stackinfo[index] = newitem
+        
+for index, char in enumerate(finalline):
+    if char == '':
+        finalline.pop(index)
+for index, char in enumerate(finalline):
+    if char == '':
+        finalline.pop(index)
+        
+stackinfo[len(stackinfo)-2] = finalline
 
 
-for item in instructions:
-    item.pop(0)
-    item.pop(1)
-    item.pop(2)
+for index, item in enumerate(stackinfo):
+    index = 0
+    while index < len(item):
+        if item[index] == '':
+            if index != (len(item) - 1):
+                if item[index+1] == '':
+                    # print(index)
+                    item.pop(index)
+                    item.pop(index)
+                    item.pop(index)
+                    index += 3
+            else:
+                item.pop(index)
+        index += 1
+        
+for item in stackinfo:
     print(item)
 
+maxlength = 0
+for item in stackinfo:
+    if len(item) > maxlength:
+        maxlength = len(item)
 
+for index in range(len(stackinfo)-1):
+    while len(stackinfo[index]) < maxlength:
+        stackinfo[index].append('')
+
+for item in stackinfo:
+    print(item)
+
+#need to count how many times an iteration of 4 spaces happens so i can leave that many spaces
 #4 spaces is one space in the stack
 
 # for item in stackinfo:
